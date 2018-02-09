@@ -1,31 +1,51 @@
 import React, { Component } from 'react';
 import ThreadContainer from './ThreadContainer'
-import API from '../api-server/categories'
+import categoryAPI from '../api-server/categories'
+import Header from './Header'
+import {connect} from 'react-redux'
 
 class App extends Component {
 
   state = {
-    categories:[]
+    categories: [],
+    value: ''
+  }
+
+  handleChange = (event, index, value) =>{
+    this.setState({value});
+    console.log(value)
   }
 
   componentDidMount() {
-    API.getAll().then((catArray)=>{
+    categoryAPI.getAll().then((catArray) => {
       this.setState((state)=>{
-        state.categories=catArray.categories
-        console.log('state within API invocation: ',state)
+        return catArray
       })
     })
-
   }
-
   render() {
     return (
       <div className="app">
-        {console.log('rerendered state: ',this.state.categories)}
-        <ThreadContainer theState={this.state}/>
+        {console.log(this.props)}
+        <Header/>
+        <ThreadContainer value={this.state.value} handleChange={this.handleChange} categories={this.state.categories}/>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+function mapStateToProps(initialState) {
+  return {
+    
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+
+  }
+}
+
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

@@ -1,12 +1,17 @@
 import {
+  GET_CATEGORIES,
   ADD_POST,
   DELETE_POST,
   ADD_COMMENT,
   DELETE_COMMENT
 } from '../actions'
 
-function mapData (state={},action) {
+let initialState = {}
+
+function mapData (state=initialState,action) {
   switch(action.type) {
+    case GET_CATEGORIES:
+      return {}
     case ADD_POST:
       return {}
       case DELETE_POST:
@@ -15,6 +20,8 @@ function mapData (state={},action) {
         return {}
       case DELETE_COMMENT:
         return {}
+      default:
+        return state
   }
 }
 
