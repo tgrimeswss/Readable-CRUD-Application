@@ -6,9 +6,14 @@ import {
   DELETE_COMMENT
 } from '../actions'
 
-let initialState = {}
+let initialState = {
+  categories: [],
+  posts: [],
+  comments: []
+}
 
 function mapData (state=initialState,action) {
+  const {comment,post} = action
   switch(action.type) {
     case GET_CATEGORIES:
       return {}
@@ -17,7 +22,12 @@ function mapData (state=initialState,action) {
       case DELETE_POST:
         return {}
       case ADD_COMMENT:
-        return {}
+      console.log(state)
+        return [
+          ...state,[comment]: {
+            ...state.cate
+          }
+        ]
       case DELETE_COMMENT:
         return {}
       default:

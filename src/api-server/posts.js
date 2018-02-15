@@ -64,10 +64,13 @@ function getAll (token) {
   })
 }
 
+
+//Having trouble understanding what token I should use as well as what
+//to actually pass in for the 'post' arg. Shouldn't it take in an id,
+//title, body and author as the args?
 function add (token, post) {
   return new Promise((res) => {
     let posts = getData(token)
-
     posts[post.id] = {
       id: post.id,
       timestamp: post.timestamp,

@@ -21,12 +21,14 @@ class ThreadContainer extends Component {
       <div>
         <MuiThemeProvider>
           <div>
+
             <DropDownMenu style={this.styles.customWidth} value={this.props.value} onChange={this.props.handleChange}>
               <MenuItem value={null} primaryText='Select a topic below' />
-              {this.props.categories.map((category)=>(
-                <MenuItem key={category.name} value={category.name} primaryText={category.name} />
-              ))}
+                {this.props.categories.map((category)=>(
+                  <MenuItem key={category.name} value={category.name} primaryText={category.name} />
+                ))}
             </DropDownMenu>
+            <i className="material-icons">add</i>
           </div>
         </MuiThemeProvider>
       </div>

@@ -6,8 +6,7 @@ import {Provider} from 'react-redux'
 import reducer from './reducers'
 import registerServiceWorker from './registerServiceWorker';
 
-const store = createStore(reducer)
-console.log(store.getState())
+export const store = createStore(reducer)
 
 ReactDOM.render(
   <Provider store={store}>
