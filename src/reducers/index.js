@@ -32,6 +32,7 @@ function mapData (state=initialState,action) {
       console.log('test')
       return {
         ...state,
+        comments: action.payload
       }
     default:
       return state
