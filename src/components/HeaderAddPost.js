@@ -22,7 +22,7 @@ const styles = {
   }
 };
 
-class Header extends Component {
+class HeaderAddPost extends Component {
   constructor(props) {
     super(props);
     this.state = {open: false};
@@ -40,7 +40,7 @@ class Header extends Component {
       <MuiThemeProvider>
       <div>
           <AppBar
-            title={<span style={styles.title}>Readable <span>{this.props.value}</span></span>}
+            title={<span style={styles.title}>Add post in <span>{this.props.value}</span></span>}
             onTitleClick={handleClick}
             iconElementLeft={
               <IconButton
@@ -54,15 +54,10 @@ class Header extends Component {
 
 
               iconElementRight={
-                <IconButton
-                  onClick={()=>{
-
-                  }
-                  }>
-                  <Link to="/addPost"><i className="material-icons">add</i></Link>
-
+                <IconButton>
+                  <Link to="/"><i className="material-icons">backspace</i></Link>
                 </IconButton>}
-            />
+             />
           <Drawer
             docked={false}
             width={200}
@@ -102,4 +97,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Header);
+export default connect(mapStateToProps,mapDispatchToProps)(HeaderAddPost);

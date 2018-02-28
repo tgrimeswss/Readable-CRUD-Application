@@ -1,9 +1,8 @@
 import {
   GET_CATEGORIES,
+  GET_POSTS,
   ADD_POST,
-  DELETE_POST,
-  ADD_COMMENT,
-  DELETE_COMMENT
+  GET_COMMENTS_BY_PARENT
 } from '../actions'
 
 let initialState = {
@@ -13,25 +12,29 @@ let initialState = {
 }
 
 function mapData (state=initialState,action) {
-  const {comment,post} = action
   switch(action.type) {
     case GET_CATEGORIES:
-      return {}
+      const {categories} = action.payload
+      return {
+        ...state,
+        categories: categories
+      }
+    case GET_POSTS:
+      return {
+        ...state,
+        posts: action.payload
+      }
     case ADD_POST:
-      return {}
-      case DELETE_POST:
-        return {}
-      case ADD_COMMENT:
-      console.log(state)
-        return [
-          ...state,[comment]: {
-            ...state.cate
-          }
-        ]
-      case DELETE_COMMENT:
-        return {}
-      default:
-        return state
+      return {
+
+      }
+    case GET_COMMENTS_BY_PARENT:
+      console.log('test')
+      return {
+        ...state,
+      }
+    default:
+      return state
   }
 }
 
