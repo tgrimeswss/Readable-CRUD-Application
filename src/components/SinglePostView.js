@@ -5,7 +5,6 @@ import AddCommentView from './AddCommentView'
 import CommentView from './CommentView'
 import {fetchComments,commentVote,postVote,deletePost,editPost,setPost} from '../actions'
 import Divider from 'material-ui/Divider';
-import {Link} from 'react-router-dom'
 
 class PostDetailView extends Component {
 
@@ -14,37 +13,36 @@ class PostDetailView extends Component {
     cursor:'pointer'
   }
 
-  componentDidMount(){
-    let {setPost} = this.props
-    setPost(this.props.post)
-  }
-
   render() {
-    const {post,postVote,deletePost,setPost,currentPost} = this.props
-    const routeToPost = `${currentPost.category}/${currentPost.id}`
+    const {postVote,deletePost,currentPost,fetchComments} = this.props
 
     return (
       <div>
-        <Card onExpandChange={()=>{setPost(post)}}>
-          <Link to={routeToPost}>
-          <CardHeader title={post.title} subtitle={post.author+" - "+post.body}></CardHeader>
-          </Link>
+        <Card onExpandChange={()=>{fetchComments('token',currentPost.id)}}>
+        <CardHeader
+          title={currentPost.title}
+          subtitle={currentPost.author+" - "+currentPost.body}
+          actAsExpander={true}
+          showExpandableButton={true}
+        >
 
-          <CardText>
-            <span>
-              <span style={this.styles}>{post.voteScore} </span>
-              <i onClick={()=>{postVote('token',post.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-              <i onClick={()=>{postVote('token',post.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-              <i onClick={()=>{editPost(post)}} style={this.styles} className="material-icons">edit</i>
-              <i onClick={()=>{deletePost(post)}} className="material-icons" style={this.styles}>delete</i>
-            </span>
-          </CardText>
+        </CardHeader>
 
-          <Divider/>
 
-          <CommentView expandable={true} post={post}/>
+        <CardText>
+          <span>
+            <span style={this.styles}>{currentPost.voteScore} </span>
+            <i onClick={()=>{postVote('token',currentPost.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
+            <i onClick={()=>{postVote('token',currentPost.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
+            <i onClick={()=>{editPost(currentPost)}} style={this.styles} className="material-icons">edit</i>
+            <i onClick={()=>{deletePost(currentPost)}} className="material-icons" style={this.styles}>delete</i>
+          </span>
+        </CardText>
 
-          <AddCommentView postId={post.id} expandable={true}/>
+        <Divider/>
+
+        <CommentView expandable={true}/>
+        <AddCommentView postId={currentPost.id} expandable={true}/>
 
         </Card>
       </div>

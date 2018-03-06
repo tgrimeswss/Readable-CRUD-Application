@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {addPost} from '../actions'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import TextField from 'material-ui/TextField';
-import postsAPI from '../api-server/posts'
+import {addPost,setCurrentCategory} from '../actions'
 import {Link} from 'react-router-dom'
-import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 class AddPost extends Component {
 
   state={
+    postCategory:'',
     postAuthor: '',
     postTitle: '',
     postBody: '',
@@ -38,6 +36,10 @@ class AddPost extends Component {
     this.setState({postTitle:event.target.value})
   }
 
+  updateCategory=(event)=>{
+    this.setState({postCategory:event.target.value})
+  }
+
   updateAuthor=(event)=>{
     this.setState({postAuthor:event.target.value})
   }
@@ -46,76 +48,66 @@ class AddPost extends Component {
     this.setState({postBody:event.target.value})
   }
 
-  componentDidMount(){
-    postsAPI.getAll().then((postsArray)=>{
-      console.log(postsArray)
-    })
-  }
-
   render() {
-    const {postAuthor,postTitle,postBody} = this.state
-    const {value} = this.props
+    const {postAuthor,postTitle,postBody,postCategory} = this.state
+    const {addPost,currentCategory} = this.props
 
-    if(value!=="") {
-      return (
-        <div>
-          <MuiThemeProvider>
-            <TextField
-              onChange={(event)=>{this.updateAuthor(event)}}
-              style={this.styles.body}
-              hintText="Author name"
-              id="name"/>
-          </MuiThemeProvider>
-          <br/>
+    return (
+      <div>
+          <TextField
+            onChange={(event)=>{this.updateCategory(event)}}
+            style={this.styles.body}
+            hintText="Category name"
+            id="category"/>
+        <br/>
 
-          <MuiThemeProvider>
-            <TextField
-              onChange={(event)=>{this.updateTitle(event)}}
-              style={this.styles}
-              hintText="Post title"
-              id="title"/>
-          </MuiThemeProvider>
-          <br/>
+          <TextField
+            onChange={(event)=>{this.updateAuthor(event)}}
+            style={this.styles.body}
+            hintText="Author name"
+            id="name"/>
+        <br/>
 
-          <MuiThemeProvider>
-            <TextField
-              onChange={(event)=>{this.updateBody(event)}}
-              style={this.styles}
-              hintText="Post body"
-              id="body"/>
-          </MuiThemeProvider>
-          <br/>
+          <TextField
+            onChange={(event)=>{this.updateTitle(event)}}
+            style={this.styles}
+            hintText="Post title"
+            id="title"/>
+        <br/>
 
+          <TextField
+            onChange={(event)=>{this.updateBody(event)}}
+            style={this.styles}
+            hintText="Post body"
+            id="body"/>
+        <br/>
+
+        <Link to="/">
           <i
             style={this.styles.submit}
-            onClick={()=>addPost(postTitle,postAuthor,postBody,value)}
+            onClick={()=>addPost(postTitle,postCategory,postAuthor,postBody,currentCategory)}
             className="material-icons">add_circle_outline
           </i>
+        </Link>
 
-        </div>
-      )
-    } else return (
-      <div>
-        <MuiThemeProvider>
-          <Dialog
-            title="Dialog With Actions"
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-          >
-          Select a category from the menu
-          </Dialog>
-      </MuiThemeProvider>
       </div>
     )
 
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(initialState) {
   return {
-    addPost: (data) => dispatch(addPost(data))
+    currentCategory: initialState.currentCategory,
+    currentPost: initialState.currentPost
   }
 }
 
-export default connect(mapDispatchToProps)(AddPost);
+function mapDispatchToProps(dispatch) {
+  return {
+    addPost: (postTitle,postCategory,postAuthor,postBody,value) => dispatch(addPost(postTitle,postCategory,postAuthor,postBody,value)),
+    setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddPost);

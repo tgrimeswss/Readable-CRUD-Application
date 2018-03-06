@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {CardText} from 'material-ui/Card'
 import AddPostButton from './AddPostButton'
+import {fetchAllPosts} from '../actions'
 import PostDetailView from './PostDetailView'
 
 class PostsList extends Component {
@@ -11,15 +12,19 @@ class PostsList extends Component {
     fontSize: '18px'
   }
 
+  componentDidMount() {
+    this.props.fetchAllPosts()
+  }
+
   render() {
-    const {posts,currentCategory} = this.props
+    const {posts,value,currentCategory} = this.props
     return (
       <div>
-          {posts.filter((post)=>post.category===currentCategory).map((post)=>(
-            <PostDetailView key={post.id} post={post} />
+          {posts.map((post)=>(
+            <PostDetailView value={value} key={post.id} post={post} />
           ))}
           <CardText style={{textAlign:'center'}} >
-            <AddPostButton/>
+            <AddPostButton value={currentCategory}/>
           </CardText>
       </div>
     )
@@ -30,9 +35,14 @@ class PostsList extends Component {
 function mapStateToProps(initialState) {
   return {
     posts: initialState.posts,
-    currentCategory: initialState.currentCategory
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchAllPosts: (data)=>dispatch(fetchAllPosts(data))
   }
 }
 
 
-export default connect(mapStateToProps)(PostsList)
+export default connect(mapStateToProps,mapDispatchToProps)(PostsList)

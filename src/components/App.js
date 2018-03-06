@@ -3,45 +3,68 @@ import Header from './Header'
 import HeaderAddPost from './HeaderAddPost'
 import PostsList from './PostsList'
 import AddPost from './AddPost'
+import LandingView from './LandingView'
+import SinglePostView from './SinglePostView'
+import {connect} from 'react-redux'
 import {Route} from 'react-router-dom'
+import { withRouter } from 'react-router'
 
 class App extends Component {
 
-  state = {
-    categories: [],
-    posts: [],
-    comments: [],
-    value: ''
-  }
-
-  setCategory = (event, index, value) =>{
-    this.setState({value:event});
-  }
-
   render() {
-    const {value} = this.state
+
+    const {currentCategory,currentPost} = this.props
+    let categoryRoute = `/category/${currentCategory}`
+    let addPostRoute = `/category/${currentCategory}/addPost`
+    let postIdRoute = `/category/${currentCategory}/${currentPost.id}`
+
     return (
       <div className="app">
-
         <Route exact path="/" render={()=>(
+            <div>
+              <Header/>
+              <LandingView/>
+            </div>
+          )}
+          />
+
+        <Route exact path={categoryRoute} render={()=>(
           <div>
-            <Header value={value} setCategory={this.setCategory}/>
-            <PostsList value={value}/>
+            <Header/>
+            <PostsList/>
           </div>
           )}
           />
 
-        <Route path="/addPost" render={()=>(
+        <Route exact path={addPostRoute} render={()=>(
             <div>
-              <HeaderAddPost value={value} setCategory={this.setCategory}/>
-              <AddPost value={value}/>
+              <HeaderAddPost />
+              <AddPost/>
             </div>
             )}
           />
+
+        <Route path={postIdRoute} render={()=>(
+            <div>
+              <Header/>
+              <SinglePostView/>
+            </div>
+            )}
+          />
+
       </div>
     )
   }
 }
 
+function mapStateToProps(initialState) {
+  return {
+    currentCategory: initialState.currentCategory,
+    currentPost: initialState.currentPost,
+    posts: initialState.posts,
+    comments: initialState.comments
+  }
+}
 
-export default App;
+
+export default withRouter(connect(mapStateToProps)(App));

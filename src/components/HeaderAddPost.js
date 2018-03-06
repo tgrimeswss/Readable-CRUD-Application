@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
@@ -35,12 +34,11 @@ class HeaderAddPost extends Component {
   handleClose = () => this.setState({open: false});
 
   render() {
-    const {categories,setCategory,fetchPostsByCategory,fetchCategories,value} = this.props
+    const {categories,setCategory,fetchPostsByCategory,fetchCategories,setCurrentCategory} = this.props
     return (
-      <MuiThemeProvider>
       <div>
           <AppBar
-            title={<span style={styles.title}>Add post in <span>{this.props.value}</span></span>}
+            title={<span style={styles.title}>Add post in <span>{setCurrentCategory}</span></span>}
             onTitleClick={handleClick}
             iconElementLeft={
               <IconButton
@@ -79,7 +77,6 @@ class HeaderAddPost extends Component {
           ))}
           </Drawer>
       </div>
-      </MuiThemeProvider>
     )
   }
 }
@@ -87,6 +84,7 @@ class HeaderAddPost extends Component {
 function mapStateToProps(initialState) {
   return {
     categories: initialState.categories,
+    currentCategory: initialState.currentCategory
   }
 }
 

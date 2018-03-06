@@ -1,29 +1,31 @@
 import React, { Component } from 'react'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import {Card} from 'material-ui/Card'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 class AddPostButton extends Component {
 
   styles={
-    cursor:'pointer'
+    cursor:'pointer',
+    textAlign: 'center'
   }
 
   render() {
+    const {currentCategory} = this.props
+    const addPostRoute = `/category/${currentCategory}/addPost`
     if(this.props.value!=="") {
       return (
-        <MuiThemeProvider>
-          <Link to="addPost">
-            <Card>
-              <i
-                style={this.styles}
-                className="material-icons">add_circle_outline</i>
-            </Card>
+          <Link to={addPostRoute}>
+            <i style={this.styles} className="material-icons">add_circle_outline</i>
           </Link>
-        </MuiThemeProvider>
       )
     } else return null
   }
 }
 
-export default AddPostButton;
+function mapStateToProps(initialState) {
+  return {
+    currentCategory: initialState.currentCategory
+  }
+}
+
+export default connect(mapStateToProps)(AddPostButton);

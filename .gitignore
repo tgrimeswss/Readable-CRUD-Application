@@ -2,9 +2,12 @@
 
 # dependencies
 /node_modules
+/src/api-server/node_modules
 
 # testing
 /coverage
+
+# token
 
 # production
 /build

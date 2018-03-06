@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
 import {connect} from 'react-redux'
-import {fetchCategories,fetchPostsByCategory} from '../actions'
+import {fetchCategories,fetchPostsByCategory,setCurrentCategory} from '../actions'
 import MenuItem from 'material-ui/MenuItem'
 import {Link} from 'react-router-dom'
 
@@ -18,7 +17,9 @@ const styles = {
     cursor: 'pointer',
   },
   navBar: {
-    textAlign:'center'
+    textAlign:'center',
+    textDecoration:'none',
+    color:'black'
   }
 };
 
@@ -35,12 +36,12 @@ class Header extends Component {
   handleClose = () => this.setState({open: false});
 
   render() {
-    const {categories,setCategory,fetchPostsByCategory,fetchCategories,value} = this.props
+    const {categories,currentCategory,setCurrentCategory,fetchPostsByCategory,fetchCategories} = this.props
+    let currentRoute = "/category/"
     return (
-      <MuiThemeProvider>
       <div>
           <AppBar
-            title={<span style={styles.title}>Readable <span>{this.props.value}</span></span>}
+            title={<span style={styles.title}><span>{currentCategory}</span></span>}
             onTitleClick={handleClick}
             iconElementLeft={
               <IconButton
@@ -51,17 +52,6 @@ class Header extends Component {
                 }>
                 <NavigationMenu />
               </IconButton>}
-
-
-              iconElementRight={
-                <IconButton
-                  onClick={()=>{
-
-                  }
-                  }>
-                  <Link to="/addPost"><i className="material-icons">add</i></Link>
-
-                </IconButton>}
             />
           <Drawer
             docked={false}
@@ -69,28 +59,42 @@ class Header extends Component {
             open={this.state.open}
             onRequestChange={(open) => this.setState({open})}
           >
-          {categories.map((category)=>(
-
+          <Link
+            style={styles.navBar}
+            to="/">
             <MenuItem
-              style={styles.navBar}
-              key={category.name}
-              value={category.name}
               onClick={()=>{
-                setCategory(category.name);
-                fetchPostsByCategory(category.name)
-                this.handleClose();
-              }}
-            >{category.name}</MenuItem>
+                this.handleClose()
+                setCurrentCategory('Readable')
+              }}>
+              Home
+            </MenuItem>
+          </Link>
+
+          {categories.map((category)=>(
+            <Link key={category.name} style={styles.navBar} to={currentRoute+category.name}>
+              <MenuItem
+                style={styles.navBar}
+                value={category.name}
+                onClick={()=>{
+                  fetchPostsByCategory(category.name)
+                  setCurrentCategory(category.name)
+                  this.handleClose();
+                }}
+                >
+                {category.name}
+              </MenuItem>
+            </Link>
           ))}
           </Drawer>
       </div>
-      </MuiThemeProvider>
     )
   }
 }
 
 function mapStateToProps(initialState) {
   return {
+    currentCategory: initialState.currentCategory,
     categories: initialState.categories,
   }
 }
@@ -98,7 +102,8 @@ function mapStateToProps(initialState) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: (data) => dispatch(fetchCategories(data)),
-    fetchPostsByCategory: (data) => dispatch(fetchPostsByCategory(data))
+    fetchPostsByCategory: (data) => dispatch(fetchPostsByCategory(data)),
+    setCurrentCategory: (data) => dispatch(setCurrentCategory(data))
   }
 }
 
