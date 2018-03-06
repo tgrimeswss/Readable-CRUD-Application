@@ -45,10 +45,12 @@ function mapData (state=initialState,action) {
         currentPost:action.post
       }
     case ADD_POST:
-      let newPost = action.payload
+      console.log({
+        ...state,
+        posts: [...state.posts,action.payload]})
       return {
         ...state,
-        posts: [...state.posts,newPost]
+        posts: [...state.posts,action.payload]
       }
     case ADD_COMMENT:
       return {
