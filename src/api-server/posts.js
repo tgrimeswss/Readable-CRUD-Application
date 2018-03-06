@@ -12,7 +12,8 @@ const defaultData = {
     category: 'react',
     voteScore: 6,
     deleted: false,
-    commentCount: 2
+    commentCount: 2,
+    editMode: false
   },
   "6ni6ok3ym7mf1p33lnez": {
     id: '6ni6ok3ym7mf1p33lnez',
@@ -23,7 +24,8 @@ const defaultData = {
     category: 'redux',
     voteScore: -5,
     deleted: false,
-    commentCount: 0
+    commentCount: 0,
+    editMode: false
   }
 }
 
@@ -76,7 +78,8 @@ function add (token, post) {
       category: post.category,
       voteScore: 1,
       deleted: false,
-      commentCount: 0
+      commentCount: 0,
+      editMode: false
     }
 
     res(posts[post.id])

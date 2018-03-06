@@ -103,7 +103,7 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: (data) => dispatch(fetchCategories(data)),
     fetchPostsByCategory: (data) => dispatch(fetchPostsByCategory(data)),
-    setCurrentCategory: (data) => dispatch(setCurrentCategory(data))
+    setCurrentCategory: (data) => dispatch(setCurrentCategory(data)),
   }
 }
 

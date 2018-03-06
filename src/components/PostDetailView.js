@@ -3,7 +3,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card'
 import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
 import CommentView from './CommentView'
-import {fetchComments,commentVote,postVote,deletePost,editPost,setPost} from '../actions'
+import {fetchComments,commentVote,postVote,editPost,setPost,deletePost} from '../actions'
 import Divider from 'material-ui/Divider';
 import {Link} from 'react-router-dom'
 
@@ -20,10 +20,11 @@ class PostDetailView extends Component {
   }
 
   render() {
-    const {post,postVote,deletePost,setPost,currentPost} = this.props
+    const {post,setPost,currentPost,deletePost} = this.props
     const routeToPost = `${currentPost.category}/${currentPost.id}`
 
     return (
+
       <div>
         <Card onExpandChange={()=>{setPost(post)}}>
           <Link to={routeToPost}>
@@ -35,8 +36,7 @@ class PostDetailView extends Component {
               <span style={this.styles}>{post.voteScore} </span>
               <i onClick={()=>{postVote('token',post.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
               <i onClick={()=>{postVote('token',post.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-              <i onClick={()=>{editPost(post)}} style={this.styles} className="material-icons">edit</i>
-              <i onClick={()=>{deletePost(post)}} className="material-icons" style={this.styles}>delete</i>
+              <i onClick={()=>{deletePost(post)}} style={this.styles} className="material-icons">delete</i>
             </span>
           </CardText>
 
@@ -65,10 +65,9 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchComments: (token,parentId) => dispatch(fetchComments(token,parentId)),
     commentVote: (token,id,option) => dispatch(commentVote(token,id,option)),
-    postVote: (token,id,option) => dispatch(postVote(token,id,option)),
-    deletePost: (post) => dispatch(deletePost(post)),
     editPost: (post) => dispatch(editPost(post)),
-    setPost: (post) => dispatch(setPost(post))
+    setPost: (post) => dispatch(setPost(post)),
+    deletePost: (post) => dispatch(deletePost(post))
   }
 }
 

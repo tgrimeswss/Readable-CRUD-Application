@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 class AddPost extends Component {
 
   state={
-    postCategory:'',
+    postCategory:this.props.currentCategory,
     postAuthor: '',
     postTitle: '',
     postBody: '',
@@ -51,13 +51,13 @@ class AddPost extends Component {
   render() {
     const {postAuthor,postTitle,postBody,postCategory} = this.state
     const {addPost,currentCategory} = this.props
-
+    const returnRoute = `/category/${currentCategory}`
     return (
       <div>
           <TextField
             onChange={(event)=>{this.updateCategory(event)}}
             style={this.styles.body}
-            hintText="Category name"
+            defaultValue={this.props.currentPost.category}
             id="category"/>
         <br/>
 
@@ -82,7 +82,7 @@ class AddPost extends Component {
             id="body"/>
         <br/>
 
-        <Link to="/">
+        <Link to={returnRoute}>
           <i
             style={this.styles.submit}
             onClick={()=>addPost(postTitle,postCategory,postAuthor,postBody,currentCategory)}

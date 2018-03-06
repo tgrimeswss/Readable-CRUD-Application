@@ -27,6 +27,7 @@ export const DELETE_POST = 'DELETE_POST'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 
 export const SET_POST = 'SET_POST'
+export const TOGGLE_DRAWER = 'TOGGLE_DRAWER'
 
 //------------------------------------------------------------------------------
 
@@ -149,9 +150,11 @@ export function deleteComment(comment) {
 
 //------------------------------------------------------------------------------
 
-export function editPost(post) {
+export function editPost(token,id,post) {
   return (dispatch) => {
-
+    postsAPI.edit(token,id,post).then((newPost)=>{
+      dispatch({type:EDIT_POST,payload:newPost})
+    })
   }
 }
 

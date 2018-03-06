@@ -13,12 +13,24 @@ class PostDetailView extends Component {
     commentBox: {
       backgroundColor:'white',
       border:'solid black 1px'
+    },
+    commentText: {
+      paddingLeft: '10px'
     }
   }
 
-  toggleEditComment = (token,id,comment) => {
+  updateEdit=(event,comment)=>{
+    event.persist()
+    comment.body = event.target.value
+  }
+
+  toggleEditComment = (comment) => {
     comment.editMode=!comment.editMode
     this.forceUpdate()
+  }
+
+  submitComment = (comment) => {
+    this.props.editComment('token',comment.id,comment)
   }
 
   render() {
@@ -32,22 +44,34 @@ class PostDetailView extends Component {
                 {comment.editMode ? (
                   <div>
                     <TextField
+                      onChange={(event)=>{
+                        this.updateEdit(event,comment)
+                      }}
                       style={this.styles.commentBox}
                       id={comment.body}
                       defaultValue={comment.body}
                       >
                     </TextField>
-                    <i className="material-icons">add_circle</i>
+                    <i
+                      style={this.styles}
+                      onClick={()=>{
+                        this.submitComment(comment)
+                        this.toggleEditComment(comment)
+                      }}
+                      className="material-icons"
+                      >
+                      add_circle
+                    </i>
                   </div>
                 ):(
-                  <div>{comment.body}</div>
+                  <div style={this.styles.commentText}>{comment.author} - {comment.body}</div>
                 )}
               </ToolbarGroup>
 
               <ToolbarGroup>
                 <i onClick={()=>{commentVote('token',comment.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
                 <i onClick={()=>{commentVote('token',comment.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-                <i onClick={()=>{this.toggleEditComment('token',comment.id,comment)}} style={this.styles} className="material-icons">edit</i>
+                <i onClick={()=>{this.toggleEditComment(comment)}} style={this.styles} className="material-icons">edit</i>
                 <i onClick={()=>{deleteComment(comment)}} className="material-icons" style={this.styles}>delete</i>
                 <span>{comment.voteScore}</span>
               </ToolbarGroup>

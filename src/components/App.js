@@ -5,6 +5,7 @@ import PostsList from './PostsList'
 import AddPost from './AddPost'
 import LandingView from './LandingView'
 import SinglePostView from './SinglePostView'
+import AllPostsView from './AllPostsView'
 import {connect} from 'react-redux'
 import {Route} from 'react-router-dom'
 import { withRouter } from 'react-router'
@@ -24,6 +25,7 @@ class App extends Component {
             <div>
               <Header/>
               <LandingView/>
+              <AllPostsView/>
             </div>
           )}
           />
@@ -65,6 +67,7 @@ function mapStateToProps(initialState) {
     comments: initialState.comments
   }
 }
+
 
 
 export default withRouter(connect(mapStateToProps)(App));

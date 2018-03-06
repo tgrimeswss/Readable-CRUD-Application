@@ -15,7 +15,8 @@ import {
 } from '../actions'
 
 let initialState = {
-  currentPost: '',
+  toggleDrawer: false,
+  currentPost: {},
   currentCategory: 'Readable',
   categories: [],
   posts: [],
@@ -96,11 +97,12 @@ function mapData (state=initialState,action) {
     case EDIT_COMMENT:
       return {
         ...state,
-        comments: [...state.comments,action.payload]
+        comments: [...state.comments]
       }
     case EDIT_POST:
       return {
-
+        ...state,
+        posts: [...state.posts]
       }
 
     default:
