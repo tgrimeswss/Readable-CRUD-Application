@@ -7,22 +7,19 @@ import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 
 class PostDetailView extends Component {
 
-  state = {
-    editCommentBoxOpen: false
-  }
-
   styles={
     fontSize:'18px',
-    cursor:'pointer'
+    cursor:'pointer',
+    commentBox: {
+      backgroundColor:'white',
+      border:'solid black 1px'
+    }
   }
 
   toggleEditComment = (token,id,comment) => {
-    this.setState({editCommentBoxOpen: !this.state.editCommentBoxOpen})
+    comment.editMode=!comment.editMode
+    this.forceUpdate()
   }
-
-  editView = () => (
-    <div>Test</div>
-  )
 
   render() {
     const {comments,commentVote,deleteComment} = this.props
@@ -31,11 +28,20 @@ class PostDetailView extends Component {
         {comments.map((comment)=>(
           <CardText key={comment.id}>
             <Toolbar>
-
-              {this.state.editCommentBoxOpen ? (<div>True</div>):(<div>False</div>)}
-
               <ToolbarGroup firstChild={true}>
-                {comment.body}
+                {comment.editMode ? (
+                  <div>
+                    <TextField
+                      style={this.styles.commentBox}
+                      id={comment.body}
+                      defaultValue={comment.body}
+                      >
+                    </TextField>
+                    <i className="material-icons">add_circle</i>
+                  </div>
+                ):(
+                  <div>{comment.body}</div>
+                )}
               </ToolbarGroup>
 
               <ToolbarGroup>
