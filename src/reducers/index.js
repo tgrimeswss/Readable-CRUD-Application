@@ -15,9 +15,7 @@ import {
 } from '../actions'
 
 let initialState = {
-  toggleDrawer: false,
   currentPost: {},
-  currentCategory: 'Readable',
   categories: [],
   posts: [],
   comments: []

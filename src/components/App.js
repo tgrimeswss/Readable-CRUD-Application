@@ -14,10 +14,10 @@ class App extends Component {
 
   render() {
 
-    const {currentCategory,currentPost} = this.props
+    const {currentPost,currentCategory} = this.props
     let categoryRoute = `/category/${currentCategory}`
-    let addPostRoute = `/category/${currentCategory}/addPost`
-    let postIdRoute = `/category/${currentCategory}/${currentPost.id}`
+    let addPostRoute = `/category/${currentPost.category}/addPost`
+    let postIdRoute = `/category/${currentPost.category}/${currentPost.id}`
 
     return (
       <div className="app">

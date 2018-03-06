@@ -39,7 +39,7 @@ class PostsList extends Component {
           <i className="material-icons">search</i>
           <TextField
             onChange={(event)=>this.updateQuery(event)}
-            hintText="Search all posts here"
+            hintText="Search for all post categories here"
             >
           </TextField>
         </span>
@@ -70,10 +70,6 @@ function mapDispatchToProps(dispatch) {
     fetchAllPosts: (data)=>dispatch(fetchAllPosts(data))
   }
 }
-
-// posts.map((post)=>(
-//   <PostDetailView value={value} key={post.id} post={post} />
-// ))
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(PostsList)

@@ -3,7 +3,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card'
 import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
 import CommentView from './CommentView'
-import {fetchComments,commentVote,postVote,editPost,setPost,deletePost} from '../actions'
+import {fetchComments,commentVote,editPost,setPost,deletePost} from '../actions'
 import Divider from 'material-ui/Divider';
 import {Link} from 'react-router-dom'
 
@@ -20,22 +20,25 @@ class PostDetailView extends Component {
   }
 
   render() {
-    const {post,setPost,currentPost,deletePost} = this.props
-    const routeToPost = `${currentPost.category}/${currentPost.id}`
+    const {post,deletePost,setPost,currentPost} = this.props
+    const routeToPost = `/category/${currentPost.category}/${currentPost.id}`
 
     return (
 
       <div>
-        <Card onExpandChange={()=>{setPost(post)}}>
-          <Link to={routeToPost}>
+        <Card>
+          <Link
+            onMouseOver={()=>{
+              setPost(post)
+            }}
+            to={routeToPost}
+            >
           <CardHeader title={post.title} subtitle={post.author+" - "+post.body}></CardHeader>
           </Link>
 
           <CardText>
             <span>
               <span style={this.styles}>{post.voteScore} </span>
-              <i onClick={()=>{postVote('token',post.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-              <i onClick={()=>{postVote('token',post.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
               <i onClick={()=>{deletePost(post)}} style={this.styles} className="material-icons">delete</i>
             </span>
           </CardText>

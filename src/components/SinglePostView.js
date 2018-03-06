@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
 import TextField from 'material-ui/TextField';
 import CommentView from './CommentView'
-import {fetchComments,commentVote,postVote,editPost,setPost} from '../actions'
+import {fetchComments,commentVote,postVote,editPost,setPost,setCurrentCategory} from '../actions'
 import Divider from 'material-ui/Divider';
 import {Link} from 'react-router-dom'
 
@@ -16,6 +16,10 @@ class PostDetailView extends Component {
     editPostBox: {
       width:'50%'
     }
+  }
+
+  componentDidUpdate(){
+    this.props.setPost(this.props.currentPost)
   }
 
   toggleEditPost(currentPost) {
@@ -36,8 +40,8 @@ class PostDetailView extends Component {
   }
 
   render() {
-    const {postVote,currentPost,fetchComments} = this.props
-    const returnRoute = `/category/${currentPost.category}`
+    const {postVote,currentPost,fetchComments,currentCategory} = this.props
+    const returnRoute = `/category/${currentCategory}`
     return (
       <div>
         {currentPost.editMode ? (
@@ -94,7 +98,9 @@ class PostDetailView extends Component {
               <i onClick={()=>{postVote('token',currentPost.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
               <i onClick={()=>{postVote('token',currentPost.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
               <i onClick={()=>{this.toggleEditPost(currentPost)}} style={this.styles} className="material-icons">edit</i>
-              <Link to={returnRoute}>
+              <Link onMouseOver={()=>{
+                  this.props.setCurrentCategory(currentPost.category)
+                }} to={returnRoute}>
                 <i style={this.styles} className="material-icons">keyboard_backspace</i>
               </Link>
             </span>
@@ -128,7 +134,8 @@ function mapDispatchToProps(dispatch) {
     commentVote: (token,id,option) => dispatch(commentVote(token,id,option)),
     postVote: (token,id,option) => dispatch(postVote(token,id,option)),
     editPost: (post) => dispatch(editPost(post)),
-    setPost: (post) => dispatch(setPost(post))
+    setPost: (post) => dispatch(setPost(post)),
+    setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
   }
 }
 

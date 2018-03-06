@@ -36,12 +36,12 @@ class Header extends Component {
   handleClose = () => this.setState({open: false});
 
   render() {
-    const {categories,currentCategory,setCurrentCategory,fetchPostsByCategory,fetchCategories} = this.props
+    const {categories,setCurrentCategory,fetchPostsByCategory,fetchCategories} = this.props
     let currentRoute = "/category/"
     return (
       <div>
           <AppBar
-            title={<span style={styles.title}><span>{currentCategory}</span></span>}
+            title={<span style={styles.title}><span>Readable</span></span>}
             onTitleClick={handleClick}
             iconElementLeft={
               <IconButton
