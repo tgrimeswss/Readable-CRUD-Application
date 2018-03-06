@@ -18,18 +18,11 @@ class PostDetailView extends Component {
 
   toggleEditComment = (token,id,comment) => {
     this.setState({editCommentBoxOpen: !this.state.editCommentBoxOpen})
-    if(this.state.editCommentBoxOpen) {
-      return (
-        <ToolbarGroup firstChild={true}>
-          <TextField hintText="Test"></TextField>
-        </ToolbarGroup>
-      )
-    } else return (
-      <ToolbarGroup firstChild={true}>
-        {comment.body}
-      </ToolbarGroup>
-    )
   }
+
+  editView = () => (
+    <div>Test</div>
+  )
 
   render() {
     const {comments,commentVote,deleteComment} = this.props
@@ -39,7 +32,11 @@ class PostDetailView extends Component {
           <CardText key={comment.id}>
             <Toolbar>
 
-              {()=>this.toggleEditComment('token','',comment)}
+              {this.state.editCommentBoxOpen ? (<div>True</div>):(<div>False</div>)}
+
+              <ToolbarGroup firstChild={true}>
+                {comment.body}
+              </ToolbarGroup>
 
               <ToolbarGroup>
                 <i onClick={()=>{commentVote('token',comment.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
