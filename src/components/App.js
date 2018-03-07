@@ -16,7 +16,7 @@ class App extends Component {
 
     const {currentPost,currentCategory} = this.props
     let categoryRoute = `/category/${currentCategory}`
-    let addPostRoute = `/category/${currentPost.category}/addPost`
+    let addPostRoute = `/category/${currentCategory}/addPost`
     let postIdRoute = `/category/${currentPost.category}/${currentPost.id}`
 
     return (

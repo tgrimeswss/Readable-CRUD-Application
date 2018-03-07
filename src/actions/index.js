@@ -1,8 +1,5 @@
 /**An action will RETURN the things specified in the function arguments. It
 is then passed off to the reducer to be changed. */
-import categoryAPI from '../api-server/categories'
-import postsAPI from '../api-server/posts'
-import commentsAPI from '../api-server/comments'
 const uuidv1 = require('uuid/v1')
 const timeStamp = require('time-stamp')
 
@@ -33,8 +30,10 @@ export const TOGGLE_DRAWER = 'TOGGLE_DRAWER'
 
 export function fetchAllPosts() {
   return (dispatch) => {
-    postsAPI.getAll().then((postsArray)=>{
-      dispatch({type:GET_POSTS,payload:postsArray})
+    fetch('http://localhost:3001/posts',{headers: {Authorization:'token'}})
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:GET_POSTS,payload:parsedJSON})
     })
   }
 }
@@ -52,8 +51,10 @@ export function setCurrentCategory(category) {
 
 export function fetchCategories() {
   return (dispatch) => {
-    categoryAPI.getAll().then((catArray)=>{
-      dispatch({type:GET_CATEGORIES,payload:catArray})
+    fetch('http://localhost:3001/categories',{headers: {Authorization:'token'}})
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:GET_CATEGORIES,payload:parsedJSON})
     })
   }
 }
@@ -62,8 +63,10 @@ export function fetchCategories() {
 
 export function fetchPostsByCategory(clickedCategory) {
   return (dispatch) => {
-    postsAPI.getByCategory('token',clickedCategory).then((postsArray)=>{
-      dispatch({type:GET_POSTS,payload:postsArray})
+    fetch(`http://localhost:3001/${clickedCategory}/posts`,{headers: {Authorization:'token'}})
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:GET_POSTS,payload:parsedJSON})
     })
   }
 }
@@ -71,8 +74,10 @@ export function fetchPostsByCategory(clickedCategory) {
 
 export function fetchComments(token,parentId) {
   return(dispatch) => {
-    commentsAPI.getByParent(token,parentId).then((comments)=>{
-      dispatch({type:GET_COMMENTS_BY_PARENT,payload:comments})
+    fetch(`http://localhost:3001/posts/${parentId}/comments`,{headers: {Authorization:'token'}})
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:GET_COMMENTS_BY_PARENT,payload:parsedJSON})
     })
   }
 }
@@ -80,8 +85,17 @@ export function fetchComments(token,parentId) {
 
 export function postVote(token,id,option) {
   return(dispatch) => {
-    postsAPI.vote(token,id,option).then((newPost)=>{
-      dispatch({type:POST_VOTE,payload:newPost})
+    fetch(`http://localhost:3001/posts/${id}`,
+      {
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:option})
+      })
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:POST_VOTE,payload:parsedJSON})
     })
   }
 }
@@ -89,44 +103,75 @@ export function postVote(token,id,option) {
 
 export function commentVote(token,id,option) {
   return(dispatch) => {
-      commentsAPI.vote(token,id,option).then((newComment)=>{
-        dispatch({type:COMMENT_VOTE,payload:newComment})
+    fetch(`http://localhost:3001/comments/${id}`,
+      {
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({option:option})
       })
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:COMMENT_VOTE,payload:parsedJSON})
+    })
   }
 }
 //------------------------------------------------------------------------------
 
 export function addPost(title,category,author,body,commentAmount,postVotes) {
-  let post = {
-    id: uuidv1(),
-    title: title,
-    author: author,
-    body: body,
-    category: category,
-    timestamp: timeStamp(),
-    commentAmount: commentAmount,
-    postVotes: postVotes
-  }
   return (dispatch) => {
-    postsAPI.add('token',post).then((newPost)=>{
-      dispatch({type:ADD_POST,payload:newPost})
+    fetch(`http://localhost:3001/posts`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            id: uuidv1(),
+            timestamp: timeStamp(),
+            title: title,
+            body: body,
+            author: author,
+            category: category,
+          }
+        )
+      })
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:ADD_POST,payload:parsedJSON})
     })
+
   }
 }
 //------------------------------------------------------------------------------
 
 export function addComment(body,parentId,author) {
-  let comment = {
-    author: author,
-    id: uuidv1(),
-    parentId: parentId,
-    timestamp: timeStamp(),
-    body: body
-  }
   return (dispatch) => {
-    commentsAPI.add('token',comment).then((newComment)=>{
-      dispatch({type:ADD_COMMENT,payload:newComment})
+    fetch(`http://localhost:3001/comments`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            id: uuidv1(),
+            timestamp: timeStamp(),
+            body: body,
+            author: author,
+            parentId: parentId
+          }
+        )
+      })
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:ADD_COMMENT,payload:parsedJSON})
     })
+
   }
 }
 
@@ -134,35 +179,87 @@ export function addComment(body,parentId,author) {
 
 export function deletePost(post) {
   return (dispatch) => {
-    postsAPI.disable('token',post.id).then((deletedPost)=>{
-      dispatch({type:DELETE_POST,payload:deletedPost})
+    fetch(`http://localhost:3001/posts/${post.id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization:'token',
+        }
+      }
+    )
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:DELETE_POST,payload:parsedJSON})
     })
   }
 }
 
 export function deleteComment(comment) {
   return (dispatch) => {
-    commentsAPI.disable('token',comment.id).then((deletedComment)=>{
-      dispatch({type:DELETE_COMMENT,payload:deletedComment})
+
+    fetch(`http://localhost:3001/comments/${comment.id}`,
+      {
+        method:'DELETE',
+        headers: {
+          Authorization:'token'
+        }
+      }
+    )
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:DELETE_COMMENT,payload:parsedJSON})
     })
   }
 }
 
 //------------------------------------------------------------------------------
 
-export function editPost(token,id,post) {
+export function editPost(post) {
   return (dispatch) => {
-    postsAPI.edit(token,id,post).then((newPost)=>{
-      dispatch({type:EDIT_POST,payload:newPost})
+    fetch(`http://localhost:3001/posts/${post.id}`,
+      {
+        method:'PUT',
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            title:post.title,
+            body:post.body
+          }
+        )
+      }
+    )
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:EDIT_POST,payload:parsedJSON})
     })
   }
 }
 
-export function editComment(token,id,comment) {
+export function editComment(comment) {
   return (dispatch) => {
-    commentsAPI.edit(token,id,comment).then((newComment)=>{
-      dispatch({type:EDIT_COMMENT,payload:newComment})
+    fetch(`http://localhost:3001/posts/${comment.id}`,
+      {
+        method:'PUT',
+        headers: {
+          Authorization:'token',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            timeStamp:timeStamp(),
+            body:comment.body
+          }
+        )
+      }
+    )
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:EDIT_COMMENT,payload:parsedJSON})
     })
+
   }
 }
 //------------------------------------------------------------------------------

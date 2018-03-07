@@ -87,12 +87,12 @@ function mapData (state=initialState,action) {
     case DELETE_POST:
       return {
         ...state,
-        posts: [...state.posts.filter((thisPost)=> thisPost.deleted === false)]
+        posts: [...state.posts.filter((thisPost)=> thisPost.id !== action.payload.id)]
       }
     case DELETE_COMMENT:
       return {
         ...state,
-        comments: [...state.comments.filter((thisComment)=> thisComment.deleted === false)]
+        comments: [...state.comments.filter((thisComment)=> thisComment.id !== action.payload.id)]
       }
     case EDIT_COMMENT:
       return {

@@ -36,7 +36,7 @@ class PostDetailView extends Component {
     currentPost.body=event.target.value
   }
   submitPost=(post)=>{
-    this.props.editPost('token',post.id,post)
+    this.props.editPost(post)
   }
 
   render() {

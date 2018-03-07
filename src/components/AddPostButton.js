@@ -12,13 +12,12 @@ class AddPostButton extends Component {
   render() {
     const {currentCategory} = this.props
     const addPostRoute = `/category/${currentCategory}/addPost`
-    if(this.props.value!=="") {
       return (
           <Link to={addPostRoute}>
             <i style={this.styles} className="material-icons">add_circle_outline</i>
           </Link>
       )
-    } else return null
+
   }
 }
 
