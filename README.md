@@ -5,16 +5,20 @@ for managing client state as well as Redux-Thunks to manage API requests.
 
 ## Start Developing
 
-To get started developing right away:
+To use this app:
 
-* Install and start the API server
-    - `cd api-server`
-    - `npm install`
-    - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
-    - `cd frontend`
-    - `npm start`
+1. Open your terminal
+--- Mac(Terminal)
+---Windows(Command Prompt)
+
+2. Change to the Readable directory
+--- "cd (Drop readable folder into terminal)"
+
+3. Run the command "npm run dev"
+--- Please be sure to have node + node package manager installed
+
+---Your computer will open a server on port 3000 & 3001
+
 
 ## API Server
 
