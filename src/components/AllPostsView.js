@@ -5,7 +5,7 @@ import PostDetailView from './PostDetailView'
 import escapeRegExp from 'escape-string-regexp'
 import TextField from 'material-ui/TextField';
 
-class PostsList extends Component {
+class AllPostsView extends Component {
 
   state = {
     query:''
@@ -28,7 +28,7 @@ class PostsList extends Component {
   }
 
   render() {
-    const {posts,value} = this.props
+    const {posts} = this.props
     const match = new RegExp(escapeRegExp(this.state.query),'i')
     const newPostArray = posts.filter((filteredPosts)=>match.test(filteredPosts.category))
     return (
@@ -44,12 +44,14 @@ class PostsList extends Component {
           </TextField>
         </span>
 
-
         {this.state.query==='' ? (
-          <div></div>
+
+            posts.map((post)=>(
+              <PostDetailView key={post.id} post={post} />
+            ))
         ):
         newPostArray.map((post)=>(
-          <PostDetailView value={value} key={post.id} post={post} />
+          <PostDetailView key={post.id} post={post} />
         ))
         }
 
@@ -72,4 +74,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(PostsList)
+export default connect(mapStateToProps,mapDispatchToProps)(AllPostsView)

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {CardText} from 'material-ui/Card'
 import AddPostButton from './AddPostButton'
+import {fetchAllPosts} from '../actions'
 import PostDetailView from './PostDetailView'
 
 class PostsList extends Component {
@@ -34,5 +35,11 @@ function mapStateToProps(initialState) {
   }
 }
 
+function mapDispatchToProps(dispatch){
+  return {
+    fetchAllPosts: ()=>dispatch(fetchAllPosts())
+  }
+}
 
-export default connect(mapStateToProps)(PostsList)
+
+export default connect(mapStateToProps,mapDispatchToProps)(PostsList)
