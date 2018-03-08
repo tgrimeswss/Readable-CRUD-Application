@@ -1,6 +1,7 @@
 # Readable Forms
 
-You now can see what the talks are about with Readable Forms! Simply create and edits posts and comments based on the topic of choice.
+This is a CRUD application that incorporates React for the clientside, Redux/React-redux
+for managing client state as well as Redux-Thunks to manage API requests.
 
 ## Start Developing
 

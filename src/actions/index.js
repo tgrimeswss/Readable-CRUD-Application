@@ -1,8 +1,7 @@
-/**An action will RETURN the things specified in the function arguments. It
-is then passed off to the reducer to be changed. */
+import keys from '../keys'
 const uuidv1 = require('uuid/v1')
 const timeStamp = require('time-stamp')
-
+let TOKEN = keys.TOKEN
 //------------------------------------------------------------------------------
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY'
@@ -26,11 +25,18 @@ export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const SET_POST = 'SET_POST'
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER'
 
+let rootUrl = `http://localhost:3001`
+let header = {
+  Authorization:TOKEN,
+  'Content-Type': 'application/json'
+}
+
 //------------------------------------------------------------------------------
 
 export function fetchAllPosts() {
+
   return (dispatch) => {
-    fetch('http://localhost:3001/posts',{headers: {Authorization:'token'}})
+    fetch(`${rootUrl}/posts`,{headers: header})
     .then((response)=>response.json())
     .then((parsedJSON)=>{
       dispatch({type:GET_POSTS,payload:parsedJSON})
@@ -51,7 +57,7 @@ export function setCurrentCategory(category) {
 
 export function fetchCategories() {
   return (dispatch) => {
-    fetch('http://localhost:3001/categories',{headers: {Authorization:'token'}})
+    fetch(`${rootUrl}/categories`,{headers: header})
     .then((response)=>response.json())
     .then((parsedJSON)=>{
       dispatch({type:GET_CATEGORIES,payload:parsedJSON})
@@ -63,7 +69,7 @@ export function fetchCategories() {
 
 export function fetchPostsByCategory(clickedCategory) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/${clickedCategory}/posts`,{headers: {Authorization:'token'}})
+    fetch(`${rootUrl}/${clickedCategory}/posts`,{headers: header})
     .then((response)=>response.json())
     .then((parsedJSON)=>{
       dispatch({type:GET_POSTS,payload:parsedJSON})
@@ -72,9 +78,9 @@ export function fetchPostsByCategory(clickedCategory) {
 }
 //------------------------------------------------------------------------------
 
-export function fetchComments(token,parentId) {
+export function fetchComments(parentId) {
   return(dispatch) => {
-    fetch(`http://localhost:3001/posts/${parentId}/comments`,{headers: {Authorization:'token'}})
+    fetch(`${rootUrl}/posts/${parentId}/comments`,{headers: header})
     .then((response)=>response.json())
     .then((parsedJSON)=>{
       dispatch({type:GET_COMMENTS_BY_PARENT,payload:parsedJSON})
@@ -83,14 +89,12 @@ export function fetchComments(token,parentId) {
 }
 //------------------------------------------------------------------------------
 
-export function postVote(token,id,option) {
+export function postVote(id,option) {
   return(dispatch) => {
-    fetch(`http://localhost:3001/posts/${id}`,
+    fetch(`${rootUrl}/posts/${id}`,
       {
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        method:'POST',
+        headers: header,
         body: JSON.stringify({option:option})
       })
     .then((response)=>response.json())
@@ -101,14 +105,12 @@ export function postVote(token,id,option) {
 }
 //------------------------------------------------------------------------------
 
-export function commentVote(token,id,option) {
+export function commentVote(id,option) {
   return(dispatch) => {
-    fetch(`http://localhost:3001/comments/${id}`,
+    fetch(`${rootUrl}/comments/${id}`,
       {
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        method:'POST',
+        headers: header,
         body: JSON.stringify({option:option})
       })
     .then((response)=>response.json())
@@ -121,13 +123,10 @@ export function commentVote(token,id,option) {
 
 export function addPost(title,category,author,body,commentAmount,postVotes) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/posts`,
+    fetch(`${rootUrl}/posts`,
       {
         method: 'POST',
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        headers: header,
         body: JSON.stringify(
           {
             id: uuidv1(),
@@ -150,13 +149,10 @@ export function addPost(title,category,author,body,commentAmount,postVotes) {
 
 export function addComment(body,parentId,author) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/comments`,
+    fetch(`${rootUrl}/comments`,
       {
         method: 'POST',
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        headers: header,
         body: JSON.stringify(
           {
             id: uuidv1(),
@@ -179,12 +175,10 @@ export function addComment(body,parentId,author) {
 
 export function deletePost(post) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/posts/${post.id}`,
+    fetch(`${rootUrl}/posts/${post.id}`,
       {
         method: 'DELETE',
-        headers: {
-          Authorization:'token',
-        }
+        headers: header
       }
     )
     .then((response)=>response.json())
@@ -197,12 +191,10 @@ export function deletePost(post) {
 export function deleteComment(comment) {
   return (dispatch) => {
 
-    fetch(`http://localhost:3001/comments/${comment.id}`,
+    fetch(`${rootUrl}/comments/${comment.id}`,
       {
         method:'DELETE',
-        headers: {
-          Authorization:'token'
-        }
+        headers: header
       }
     )
     .then((response)=>response.json())
@@ -216,13 +208,10 @@ export function deleteComment(comment) {
 
 export function editPost(post) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/posts/${post.id}`,
+    fetch(`${rootUrl}/posts/${post.id}`,
       {
         method:'PUT',
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        headers: header,
         body: JSON.stringify(
           {
             title:post.title,
@@ -240,13 +229,10 @@ export function editPost(post) {
 
 export function editComment(comment) {
   return (dispatch) => {
-    fetch(`http://localhost:3001/posts/${comment.id}`,
+    fetch(`${rootUrl}/comments/${comment.id}`,
       {
         method:'PUT',
-        headers: {
-          Authorization:'token',
-          'Content-Type': 'application/json'
-        },
+        headers: header,
         body: JSON.stringify(
           {
             timeStamp:timeStamp(),

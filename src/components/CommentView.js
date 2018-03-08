@@ -30,7 +30,7 @@ class PostDetailView extends Component {
   }
 
   submitComment = (comment) => {
-    this.props.editComment('token',comment.id,comment)
+    this.props.editComment(comment)
   }
 
   render() {
@@ -69,8 +69,8 @@ class PostDetailView extends Component {
               </ToolbarGroup>
 
               <ToolbarGroup>
-                <i onClick={()=>{commentVote('token',comment.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-                <i onClick={()=>{commentVote('token',comment.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
+                <i onClick={()=>{commentVote(comment.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
+                <i onClick={()=>{commentVote(comment.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
                 <i onClick={()=>{this.toggleEditComment(comment)}} style={this.styles} className="material-icons">edit</i>
                 <i onClick={()=>{deleteComment(comment)}} className="material-icons" style={this.styles}>delete</i>
                 <span>{comment.voteScore}</span>
@@ -95,9 +95,9 @@ function mapStateToProps(initialState) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    commentVote: (token,id,option) => dispatch(commentVote(token,id,option)),
+    commentVote: (id,option) => dispatch(commentVote(id,option)),
     deleteComment: (comment) => dispatch(deleteComment(comment)),
-    editComment: (token,id,comment) => dispatch(editComment(token,id,comment))
+    editComment: (comment) => dispatch(editComment(comment))
   }
 }
 

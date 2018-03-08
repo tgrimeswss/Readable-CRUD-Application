@@ -8,6 +8,7 @@ import reducer from './reducers'
 import thunk from 'redux-thunk'
 import {BrowserRouter} from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
+require('dotenv').config()
 
 export const store = createStore(reducer,applyMiddleware(thunk))
 
