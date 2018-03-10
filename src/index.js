@@ -4,20 +4,19 @@ import App from './components/App';
 import {createStore,applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import reducer from './reducers'
+import rootReducer from './reducers'
 import thunk from 'redux-thunk'
 import {BrowserRouter} from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
-require('dotenv').config()
 
-export const store = createStore(reducer,applyMiddleware(thunk))
+export const store = createStore(rootReducer,applyMiddleware(thunk))
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <MuiThemeProvider>
         <BrowserRouter>
-          <App />
+            <App />
         </BrowserRouter>
     </MuiThemeProvider>
     </Provider>

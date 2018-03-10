@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {addPost,setCurrentCategory} from '../actions'
 import {Link} from 'react-router-dom'
 import TextField from 'material-ui/TextField';
+import '../styles/index.css'
 
 class AddPost extends Component {
 
@@ -14,16 +15,6 @@ class AddPost extends Component {
     open: true
   }
 
-  styles={
-    author: {},
-    title: {},
-    body: {
-      multiLine: 'true'
-    },
-    submit: {
-      cursor:'pointer'
-    }
-  }
   handleOpen = () => {
     this.setState({open: true});
   };
@@ -56,37 +47,36 @@ class AddPost extends Component {
       <div>
           <TextField
             onChange={(event)=>{this.updateCategory(event)}}
-            style={this.styles.body}
+            className="addCommentFont"
             defaultValue={this.props.currentPost.category}
             id="category"/>
         <br/>
 
           <TextField
             onChange={(event)=>{this.updateAuthor(event)}}
-            style={this.styles.body}
+            className="addCommentFont"
             hintText="Author name"
             id="name"/>
         <br/>
 
           <TextField
             onChange={(event)=>{this.updateTitle(event)}}
-            style={this.styles}
+            className="addCommentFont"
             hintText="Post title"
             id="title"/>
         <br/>
 
           <TextField
             onChange={(event)=>{this.updateBody(event)}}
-            style={this.styles}
+            className="addCommentFont"
             hintText="Post body"
             id="body"/>
         <br/>
 
         <Link to={returnRoute}>
           <i
-            style={this.styles.submit}
             onClick={()=>addPost(postTitle,postCategory,postAuthor,postBody,currentCategory)}
-            className="material-icons">add_circle_outline
+            className="material-icons addCommentFont">add_circle_outline
           </i>
         </Link>
 
@@ -98,8 +88,8 @@ class AddPost extends Component {
 
 function mapStateToProps(initialState) {
   return {
-    currentCategory: initialState.currentCategory,
-    currentPost: initialState.currentPost
+    currentCategory: initialState.categoryReducer.currentCategory,
+    currentPost: initialState.postReducer.currentPost
   }
 }
 

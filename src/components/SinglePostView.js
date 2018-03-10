@@ -4,22 +4,17 @@ import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
 import TextField from 'material-ui/TextField';
 import CommentView from './CommentView'
-import {fetchComments,postVote,editPost,setPost,setCurrentCategory} from '../actions'
+import {postVote,editPost,setPost,getSpecificPost,fetchAllPosts} from '../actions'
+import {fetchComments,setCurrentCategory} from '../actions'
 import Divider from 'material-ui/Divider';
 import {Link} from 'react-router-dom'
+import '../styles/index.css'
 
 class PostDetailView extends Component {
 
-  styles={
-    fontSize:'18px',
-    cursor:'pointer',
-    editPostBox: {
-      width:'50%'
-    }
-  }
-
-  componentDidUpdate(){
-    this.props.setPost(this.props.currentPost)
+  componentDidMount(){
+    this.props.fetchAllPosts()
+    this.props.getSpecificPost(localStorage.currentPostId)
   }
 
   toggleEditPost(currentPost) {
@@ -50,14 +45,20 @@ class PostDetailView extends Component {
 
           currentPost.editMode ? (
 
-            <Card key={post.id} onExpandChange={()=>{fetchComments(currentPost.id)}}>
+            <Card
+              key={post.id}
+              onExpandChange={()=>{
+                fetchComments(currentPost.id)
+
+              }}>
+
               <CardHeader>
                 <div>
                   <span>Title: </span>
                   <TextField
                     onChange={(event)=>this.updateTitle(event,currentPost)}
                     id="title"
-                    style={this.styles.editPostBox}
+                    className="editPostBox"
                     defaultValue={currentPost.title}
                     >
                   </TextField>
@@ -68,15 +69,14 @@ class PostDetailView extends Component {
                   <TextField
                     onChange={(event)=>this.updateBody(event,currentPost)}
                     id="body"
-                    style={this.styles.editPostBox}
+                    className="editPostBox"
                     defaultValue={currentPost.body}
                     >
                   </TextField>
                 </div>
 
                 <i
-                  style={this.styles}
-                  className="material-icons"
+                  className="material-icons addCommentFont"
                   onClick={()=>{
                     this.submitPost(currentPost)
                     this.toggleEditPost(currentPost)
@@ -86,7 +86,12 @@ class PostDetailView extends Component {
               </CardHeader>
             </Card>
           ):(
-            <Card key={post.id} onExpandChange={()=>{fetchComments(currentPost.id)}}>
+            <Card
+              key={post.id}
+              onExpandChange={()=>{
+                fetchComments(currentPost.id)
+              }}>
+
             <CardHeader
               title={currentPost.title}
               subtitle={currentPost.author+" - "+currentPost.body}
@@ -99,14 +104,15 @@ class PostDetailView extends Component {
 
             <CardText>
               <span>
-                <span style={this.styles}>{post.voteScore} </span>
-                <i onClick={()=>{postVote(post.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-                <i onClick={()=>{postVote(post.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-                <i onClick={()=>{this.toggleEditPost(currentPost)}} style={this.styles} className="material-icons">edit</i>
+                <span className="addCommentFont">{post.voteScore} </span>
+                <i onClick={()=>{postVote(post.id,'upVote')}} className="material-icons addCommentFont">thumb_up</i>
+                <i onClick={()=>{postVote(post.id,'downVote')}} className="material-icons addCommentFont">thumb_down</i>
+                <i onClick={()=>{this.toggleEditPost(currentPost)}} className="material-icons addCommentFont">edit</i>
+                <span className="addCommentFont">(<i className="material-icons smallerFont">comment</i> {post.commentCount})</span>
                 <Link onMouseOver={()=>{
                     this.props.setCurrentCategory(currentPost.category)
                   }} to={returnRoute}>
-                  <i style={this.styles} className="material-icons">keyboard_backspace</i>
+                  <i className="material-icons addCommentFont">keyboard_backspace</i>
                 </Link>
               </span>
             </CardText>
@@ -126,21 +132,24 @@ class PostDetailView extends Component {
 }
 
 function mapStateToProps(initialState) {
+  let postReducer = initialState.postReducer
   return {
-    currentPost: initialState.currentPost,
-    currentCategory: initialState.currentCategory,
-    posts: initialState.posts,
-    comments: initialState.comments
+    currentPost: postReducer.currentPost,
+    currentCategory: initialState.categoryReducer.currentCategory,
+    posts: postReducer.posts,
+    comments: initialState.commentReducer.comments
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchComments: (parentId) => dispatch(fetchComments(parentId)),
+    fetchAllPosts: ()=>dispatch(fetchAllPosts()),
     postVote: (id,option) => dispatch(postVote(id,option)),
     editPost: (post) => dispatch(editPost(post)),
     setPost: (post) => dispatch(setPost(post)),
-    setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
+    setCurrentCategory: (category) => dispatch(setCurrentCategory(category)),
+    getSpecificPost: (post) => dispatch(getSpecificPost(post))
   }
 }
 

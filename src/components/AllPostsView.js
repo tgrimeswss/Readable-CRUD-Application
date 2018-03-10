@@ -4,16 +4,13 @@ import {fetchAllPosts} from '../actions'
 import PostDetailView from './PostDetailView'
 import escapeRegExp from 'escape-string-regexp'
 import TextField from 'material-ui/TextField';
+import {CardText} from 'material-ui/Card'
+import AddPostButton from './AddPostButton'
 
 class AllPostsView extends Component {
 
   state = {
     query:''
-  }
-
-  styles={
-    cursor: 'pointer',
-    fontSize: '18px'
   }
 
   updateQuery=(event)=>{
@@ -55,6 +52,10 @@ class AllPostsView extends Component {
         ))
         }
 
+        <CardText className="centerText" >
+          <AddPostButton/>
+        </CardText>
+
       </div>
     )
 
@@ -63,7 +64,7 @@ class AllPostsView extends Component {
 
 function mapStateToProps(initialState) {
   return {
-    posts: initialState.posts,
+    posts: initialState.postReducer.posts,
   }
 }
 

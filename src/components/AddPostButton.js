@@ -1,20 +1,14 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import '../styles/index.css'
 
 class AddPostButton extends Component {
 
-  styles={
-    cursor:'pointer',
-    textAlign: 'center'
-  }
-
   render() {
-    const {currentCategory} = this.props
-    const addPostRoute = `/category/${currentCategory}/addPost`
       return (
-          <Link to={addPostRoute}>
-            <i style={this.styles} className="material-icons">add_circle_outline</i>
+          <Link to={"/addPost"}>
+            <i className="material-icons addCommentFont centerText">add_circle_outline</i>
           </Link>
       )
 
@@ -23,7 +17,7 @@ class AddPostButton extends Component {
 
 function mapStateToProps(initialState) {
   return {
-    currentCategory: initialState.currentCategory
+    currentCategory: initialState.categoryReducer.currentCategory
   }
 }
 

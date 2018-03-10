@@ -7,21 +7,11 @@ import {connect} from 'react-redux'
 import {fetchCategories,fetchPostsByCategory,setCurrentCategory} from '../actions'
 import MenuItem from 'material-ui/MenuItem'
 import {Link} from 'react-router-dom'
+import '../styles/index.css'
 
 function handleClick() {
   alert('Make a comment on the following categories');
 }
-
-const styles = {
-  title: {
-    cursor: 'pointer',
-  },
-  navBar: {
-    textAlign:'center',
-    textDecoration:'none',
-    color:'black'
-  }
-};
 
 class Header extends Component {
   constructor(props) {
@@ -41,7 +31,8 @@ class Header extends Component {
     return (
       <div>
           <AppBar
-            title={<span style={styles.title}><span>Readable</span></span>}
+            className="addCommentFont"
+            title={<span><span>Readable</span></span>}
             onTitleClick={handleClick}
             iconElementLeft={
               <IconButton
@@ -60,7 +51,7 @@ class Header extends Component {
             onRequestChange={(open) => this.setState({open})}
           >
           <Link
-            style={styles.navBar}
+            className="navBar"
             to="/">
             <MenuItem
               onClick={()=>{
@@ -72,12 +63,13 @@ class Header extends Component {
           </Link>
 
           {categories.map((category)=>(
-            <Link key={category.name} style={styles.navBar} to={currentRoute+category.name}>
+            <Link key={category.name} className="navBar" to={currentRoute+category.name}>
               <MenuItem
-                style={styles.navBar}
+                className="navBar"
                 value={category.name}
                 onClick={()=>{
                   fetchPostsByCategory(category.name)
+                  localStorage.setItem('currentCategory',category.name)
                   setCurrentCategory(category.name)
                   this.handleClose();
                 }}
@@ -93,9 +85,10 @@ class Header extends Component {
 }
 
 function mapStateToProps(initialState) {
+  let catState = initialState.categoryReducer
   return {
-    currentCategory: initialState.currentCategory,
-    categories: initialState.categories,
+    currentCategory: catState.currentCategory,
+    categories: catState.categories,
   }
 }
 

@@ -3,49 +3,46 @@ import {Card, CardHeader, CardText} from 'material-ui/Card'
 import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
 import CommentView from './CommentView'
-import {editPost,setPost,deletePost,postVote,fetchAllPosts} from '../actions'
+import {editPost,setPost,deletePost,postVote,fetchAllPosts,setCurrentCategory} from '../actions'
 import Divider from 'material-ui/Divider';
 import {Link} from 'react-router-dom'
+import '../styles/index.css'
 
 class PostDetailView extends Component {
 
-  styles={
-    fontSize:'18px',
-    cursor:'pointer'
+  componentDidMount(){
+    let {fetchAllPosts,setCurrentCategory} = this.props
+    fetchAllPosts()
+    setCurrentCategory(localStorage.currentCategory)
   }
 
-  componentDidMount(){
-    let {setPost,fetchAllPosts} = this.props
-    setPost(this.props.post)
-    fetchAllPosts()
+  componentWillUpdate(nextProps){
+    localStorage.setItem('currentPostId',nextProps.currentPost.id)
   }
 
   render() {
-    const {post,deletePost,setPost,currentPost,postVote} = this.props
-    const routeToPost = `/category/${currentPost.category}/${currentPost.id}`
+    const {deletePost,currentPost,postVote,setPost,posts,currentCategory} = this.props
 
     return (
 
       <div>
-        <Card>
-          <Link
-            onMouseOver={()=>{
-              setPost(post)
-            }}
-            to={routeToPost}
-            >
-          <CardHeader title={post.title} subtitle={post.author+" - "+post.body}></CardHeader>
+        {posts.filter((post)=>post.category===currentCategory).map((post)=>(
+
+
+        <Card key={post.id} onClick={()=>this.props.setPost(post)} onMouseOver={()=>setPost(post)}>
+          <Link to={"/category/"+currentPost.category+"/"+localStorage.currentPostId}>
+            <CardHeader title={post.title} subtitle={post.author+" - "+post.body}></CardHeader>
           </Link>
 
           <CardText>
             <span>
-              <span style={this.styles}>{post.voteScore} </span>
-                <i onClick={()=>{postVote(currentPost.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-                <i onClick={()=>{postVote(currentPost.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-              <i onClick={()=>{deletePost(post)}} style={this.styles} className="material-icons">delete</i>
+              <span className="addCommentFont">{post.voteScore} </span>
+              <i onClick={()=>{postVote(post.id,'upVote')}} className="material-icons addCommentFont">thumb_up</i>
+              <i onClick={()=>{postVote(post.id,'downVote')}} className="material-icons addCommentFont">thumb_down</i>
+              <i onClick={()=>{deletePost(post)}} className="material-icons addCommentFont">delete</i>
+              <span className="addCommentFont">(<i className="material-icons smallerFont">comment</i> {post.commentCount})</span>
             </span>
           </CardText>
-
           <Divider/>
 
           <CommentView expandable={true} post={post}/>
@@ -53,17 +50,21 @@ class PostDetailView extends Component {
           <AddCommentView postId={post.id} expandable={true}/>
 
         </Card>
+        ))}
+
       </div>
+
     )
   }
 }
 
 function mapStateToProps(initialState) {
+  let postReducer = initialState.postReducer
   return {
-    currentPost: initialState.currentPost,
-    currentCategory: initialState.currentCategory,
-    posts: initialState.posts,
-    comments: initialState.comments
+    currentPost: postReducer.currentPost,
+    currentCategory: initialState.categoryReducer.currentCategory,
+    posts: postReducer.posts,
+    comments: initialState.commentReducer.comments
   }
 }
 
@@ -73,7 +74,8 @@ function mapDispatchToProps(dispatch) {
     editPost: (post) => dispatch(editPost(post)),
     setPost: (post) => dispatch(setPost(post)),
     deletePost: (post) => dispatch(deletePost(post)),
-    postVote: (id,option) => dispatch(postVote(id,option))
+    postVote: (id,option) => dispatch(postVote(id,option)),
+    setCurrentCategory: (category) => dispatch(setCurrentCategory(category))
   }
 }
 

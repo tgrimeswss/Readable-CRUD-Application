@@ -1,0 +1,31 @@
+.addCommentFont {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.commentBox {
+  background-color: 'white';
+  border: 'solid black 1px';
+}
+
+.commentText {
+  padding-left: 10px;
+}
+
+.navBar {
+  text-align: center;
+  text-decoration: none;
+  color: 'black'
+}
+
+.smallerFont {
+  font-size: 14px;
+}
+
+.editPostBox {
+  width: 50%;
+}

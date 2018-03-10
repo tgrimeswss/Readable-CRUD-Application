@@ -4,20 +4,9 @@ import {connect} from 'react-redux'
 import TextField from 'material-ui/TextField';
 import {commentVote,deleteComment,editComment} from '../actions'
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import '../styles/index.css'
 
 class PostDetailView extends Component {
-
-  styles={
-    fontSize:'18px',
-    cursor:'pointer',
-    commentBox: {
-      backgroundColor:'white',
-      border:'solid black 1px'
-    },
-    commentText: {
-      paddingLeft: '10px'
-    }
-  }
 
   updateEdit=(event,comment)=>{
     event.persist()
@@ -47,32 +36,31 @@ class PostDetailView extends Component {
                       onChange={(event)=>{
                         this.updateEdit(event,comment)
                       }}
-                      style={this.styles.commentBox}
+                      className="commentBox"
                       id={comment.body}
                       defaultValue={comment.body}
                       >
                     </TextField>
                     <i
-                      style={this.styles}
                       onClick={()=>{
                         this.submitComment(comment)
                         this.toggleEditComment(comment)
                       }}
-                      className="material-icons"
+                      className="material-icons addCommentFont"
                       >
                       add_circle
                     </i>
                   </div>
                 ):(
-                  <div style={this.styles.commentText}>{comment.author} - {comment.body}</div>
+                  <div className="commentText">{comment.author} - {comment.body}</div>
                 )}
               </ToolbarGroup>
 
               <ToolbarGroup>
-                <i onClick={()=>{commentVote(comment.id,'upVote')}} style={this.styles} className="material-icons">thumb_up</i>
-                <i onClick={()=>{commentVote(comment.id,'downVote')}} style={this.styles} className="material-icons">thumb_down</i>
-                <i onClick={()=>{this.toggleEditComment(comment)}} style={this.styles} className="material-icons">edit</i>
-                <i onClick={()=>{deleteComment(comment)}} className="material-icons" style={this.styles}>delete</i>
+                <i onClick={()=>{commentVote(comment.id,'upVote')}} className="addCommentFont material-icons">thumb_up</i>
+                <i onClick={()=>{commentVote(comment.id,'downVote')}} className="addCommentFont material-icons">thumb_down</i>
+                <i onClick={()=>{this.toggleEditComment(comment)}} className="addCommentFont material-icons">edit</i>
+                <i onClick={()=>{deleteComment(comment)}} className="addCommentFont material-icons">delete</i>
                 <span>{comment.voteScore}</span>
               </ToolbarGroup>
             </Toolbar>
@@ -87,9 +75,9 @@ class PostDetailView extends Component {
 
 function mapStateToProps(initialState) {
   return {
-    currentCategory: initialState.currentCategory,
-    posts: initialState.posts,
-    comments: initialState.comments
+    currentCategory: initialState.categoryReducer.currentCategory,
+    posts: initialState.postReducer.posts,
+    comments: initialState.commentReducer.comments
   }
 }
 

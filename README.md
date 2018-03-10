@@ -5,6 +5,19 @@ for managing client state as well as Redux-Thunks to manage API requests.
 
 ## Start Developing
 
+To install this app:
+
+1. Open your terminal
+--- Mac(Terminal)
+---Windows(Command Prompt)
+
+2. Change to the Readable directory
+--- "cd (Drop readable folder into terminal)"
+
+3. Run the command "npm install"
+--- This will install the application to your local system
+
+
 To use this app:
 
 1. Open your terminal
@@ -18,8 +31,3 @@ To use this app:
 --- Please be sure to have node + node package manager installed
 
 ---Your computer will open a server on port 3000 & 3001
-
-
-## API Server
-
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).

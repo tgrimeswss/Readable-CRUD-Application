@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import Header from './Header'
-import HeaderAddPost from './HeaderAddPost'
-import PostsList from './PostsList'
 import AddPost from './AddPost'
+import PostDetailView from './PostDetailView'
 import LandingView from './LandingView'
 import SinglePostView from './SinglePostView'
 import AllPostsView from './AllPostsView'
@@ -13,12 +12,6 @@ import { withRouter } from 'react-router'
 class App extends Component {
 
   render() {
-
-    const {currentPost,currentCategory} = this.props
-    let categoryRoute = `/category/${currentCategory}`
-    let addPostRoute = `/category/${currentCategory}/addPost`
-    let postIdRoute = `/category/${currentPost.category}/${currentPost.id}`
-
     return (
       <div className="app">
         <Route exact path="/" render={()=>(
@@ -30,23 +23,23 @@ class App extends Component {
           )}
           />
 
-        <Route exact path={categoryRoute} render={()=>(
+        <Route exact path={"/category/:currentCategory"} render={()=>(
           <div>
             <Header/>
-            <PostsList/>
+            <PostDetailView/>
           </div>
           )}
           />
 
-        <Route exact path={addPostRoute} render={()=>(
+        <Route exact path={"/addPost"} render={()=>(
             <div>
-              <HeaderAddPost />
+              <Header/>
               <AddPost/>
             </div>
             )}
           />
 
-        <Route path={postIdRoute} render={()=>(
+        <Route exact path={"/category/:currentCategory/:currentPost"} render={()=>(
             <div>
               <Header/>
               <SinglePostView/>

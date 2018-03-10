@@ -1,0 +1,21 @@
+export const GET_CATEGORIES = 'GET_CATEGORIES'
+export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY'
+
+export const GET_POSTS = 'GET_POSTS'
+export const GET_ALL_POSTS = 'GET_ALL_POSTS'
+export const GET_SPECIFIC_POSTS = 'GET_SPECIFIC_POSTS'
+
+export const ADD_POST = 'ADD_POST'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const GET_COMMENTS_BY_PARENT = 'GET_COMMENTS_BY_PARENT'
+
+export const COMMENT_VOTE = 'COMMENT_VOTE'
+export const POST_VOTE = 'POST_VOTE'
+
+export const EDIT_POST = 'EDIT_POST'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
+
+export const DELETE_POST = 'DELETE_POST'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+
+export const SET_POST = 'SET_POST'

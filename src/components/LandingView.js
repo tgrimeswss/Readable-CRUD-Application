@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
+import '../styles/index.css'
 
 class LandingView extends Component {
 
@@ -9,7 +10,7 @@ class LandingView extends Component {
         <Card>
           <CardTitle title="Welcome to the Readable Forums!" />
           <CardText>
-            Select a topic from the <span><i style={this.styles} className="material-icons">menu</i></span> to see whats being talked about!
+            Select a topic from the <span><i className="material-icons addCommentFont">menu</i></span> to see whats being talked about!
           </CardText>
         </Card>
       </div>

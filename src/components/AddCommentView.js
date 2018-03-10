@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import {addComment} from '../actions'
 import {connect} from 'react-redux'
+import '../styles/index.css'
 
 class AddCommentView extends Component {
 
   state = {
     commentBody: ''
-  }
-
-  styles={
-    fontSize:'18px',
-    cursor:'pointer'
   }
 
   updateComment=(event)=>{
@@ -35,8 +31,7 @@ class AddCommentView extends Component {
           onClick={()=>{
             addComment(commentBody,postId,'Someone')
           }}
-          style={this.styles}
-          className="material-icons">
+          className="material-icons addCommentFont">
             add_circle_outline
         </i>
         </span>
