@@ -5,7 +5,8 @@ import {
   POST_VOTE,
   DELETE_POST,
   EDIT_POST,
-  SET_POST
+  SET_POST,
+  GET_POST
 } from './actionTypes'
 
 
@@ -130,10 +131,24 @@ export function editPost(post) {
   }
 }
 
-
 export function setPost(post) {
   return {
     type: SET_POST,
     post
+  }
+}
+
+export function getPost(id) {
+  return (dispatch) => {
+    fetch(`${rootUrl}/posts/${id}`,
+      {
+        method: 'GET',
+        headers: header
+      }
+    )
+    .then((response)=>response.json())
+    .then((parsedJSON)=>{
+      dispatch({type:GET_POST,payload:parsedJSON})
+    })
   }
 }

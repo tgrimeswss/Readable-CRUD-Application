@@ -4,6 +4,7 @@ import {addPost,setCurrentCategory} from '../actions'
 import {Link} from 'react-router-dom'
 import TextField from 'material-ui/TextField';
 import '../styles/index.css'
+import RaisedButton from 'material-ui/RaisedButton';
 
 class AddPost extends Component {
 
@@ -42,13 +43,12 @@ class AddPost extends Component {
   render() {
     const {postAuthor,postTitle,postBody,postCategory} = this.state
     const {addPost,currentCategory} = this.props
-    const returnRoute = `/category/${currentCategory}`
     return (
       <div>
           <TextField
             onChange={(event)=>{this.updateCategory(event)}}
             className="addCommentFont"
-            defaultValue={this.props.currentPost.category}
+            hintText="Type a category"
             id="category"/>
         <br/>
 
@@ -73,11 +73,15 @@ class AddPost extends Component {
             id="body"/>
         <br/>
 
-        <Link to={returnRoute}>
-          <i
+        <Link to="/">
+          <RaisedButton
+            label="Add Post"
+            primary={true} 
             onClick={()=>addPost(postTitle,postCategory,postAuthor,postBody,currentCategory)}
-            className="material-icons addCommentFont">add_circle_outline
-          </i>
+            className="material-icons addCommentFont"
+            >
+
+          </RaisedButton>
         </Link>
 
       </div>

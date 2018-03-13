@@ -4,7 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
 import {connect} from 'react-redux'
-import {fetchCategories,fetchPostsByCategory,setCurrentCategory} from '../actions'
+import {fetchCategories,setCurrentCategory,setPost} from '../actions'
 import MenuItem from 'material-ui/MenuItem'
 import {Link} from 'react-router-dom'
 import '../styles/index.css'
@@ -26,8 +26,7 @@ class Header extends Component {
   handleClose = () => this.setState({open: false});
 
   render() {
-    const {categories,setCurrentCategory,fetchPostsByCategory,fetchCategories} = this.props
-    let currentRoute = "/category/"
+    const {categories,setCurrentCategory,fetchCategories} = this.props
     return (
       <div>
           <AppBar
@@ -55,6 +54,7 @@ class Header extends Component {
             to="/">
             <MenuItem
               onClick={()=>{
+                setPost({})
                 this.handleClose()
                 setCurrentCategory('Readable')
               }}>
@@ -63,13 +63,12 @@ class Header extends Component {
           </Link>
 
           {categories.map((category)=>(
-            <Link key={category.name} className="navBar" to={currentRoute+category.name}>
+            <Link key={category.name} className="navBar" to={`/${category.name}/posts`}>
               <MenuItem
                 className="navBar"
                 value={category.name}
                 onClick={()=>{
-                  fetchPostsByCategory(category.name)
-                  localStorage.setItem('currentCategory',category.name)
+                  setPost({})
                   setCurrentCategory(category.name)
                   this.handleClose();
                 }}
@@ -95,8 +94,8 @@ function mapStateToProps(initialState) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: (data) => dispatch(fetchCategories(data)),
-    fetchPostsByCategory: (data) => dispatch(fetchPostsByCategory(data)),
     setCurrentCategory: (data) => dispatch(setCurrentCategory(data)),
+    setPost: (post) => dispatch(setPost(post))
   }
 }
 

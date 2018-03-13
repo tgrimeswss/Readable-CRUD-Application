@@ -5,7 +5,8 @@ import {
   POST_VOTE,
   DELETE_POST,
   EDIT_POST,
-  SET_POST
+  SET_POST,
+  GET_POST
 } from '../actions/actionTypes'
 
 let initialState = {
@@ -26,7 +27,6 @@ export default function postReducer (state=initialState,action) {
         ...state,
         currentPost: action.payload
       }
-
     case SET_POST:
       return {
         ...state,
@@ -37,7 +37,6 @@ export default function postReducer (state=initialState,action) {
         ...state,
         posts: [...state.posts,action.payload]
       }
-
     case POST_VOTE:
       let post = action.payload
       return {
@@ -54,11 +53,15 @@ export default function postReducer (state=initialState,action) {
         ...state,
         posts: [...state.posts.filter((thisPost)=> thisPost.id !== action.payload.id)]
       }
-
     case EDIT_POST:
       return {
         ...state,
         posts: [...state.posts]
+      }
+    case GET_POST:
+      return {
+        ...state,
+        currentPost: action.payload
       }
 
     default:

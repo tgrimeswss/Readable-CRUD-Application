@@ -2,38 +2,37 @@ import React, { Component } from 'react';
 import {Card, CardHeader, CardText} from 'material-ui/Card'
 import {connect} from 'react-redux'
 import AddCommentView from './AddCommentView'
-import ErrorView from './ErrorView'
 import CommentView from './CommentView'
+import ErrorView from './ErrorView'
 import {setPost,deletePost,postVote,setCurrentCategory,fetchAllPosts} from '../actions'
 import Divider from 'material-ui/Divider';
 import {withRouter,Link} from 'react-router-dom'
 import '../styles/index.css'
 import _ from 'lodash'
 
-class PostDetailView extends Component {
+class CategoryPostDetailView extends Component {
 
   componentDidMount(){
     this.props.fetchAllPosts()
   }
 
   render() {
-    const {deletePost,postVote,posts,sortedCategory} = this.props
-    let sortedPosts = _.sortBy(posts,sortedCategory)
+    const {deletePost,postVote,posts,sortedCategory,match} = this.props
+    let filteredPosts = posts.filter((thisPost)=>thisPost.category===match.params.category)
+    let sortedPosts = _.sortBy(filteredPosts,sortedCategory)
 
-    if(sortedCategory===undefined) {
+    if(match.params.category===undefined || match.params.category===null){
       return <ErrorView/>
     } else return (
       <div>
         {sortedPosts.map((post)=>(
             <Card key={post.id}>
-              <Link to={`/${post.category}/posts/${post.id}`}>
-                <CardHeader
+              <Link to={`/${post.category}/posts/${post.id}`}><CardHeader
                 style={{cursor:'pointer'}}
                 title={post.title}
                 subtitle={post.author+" - "+post.body}
                 >
-                </CardHeader>
-              </Link>
+              </CardHeader></Link>
 
               <CardText>
                 <span>
@@ -80,4 +79,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(PostDetailView));
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(CategoryPostDetailView));

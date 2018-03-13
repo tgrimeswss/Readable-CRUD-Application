@@ -19,3 +19,4 @@ export const DELETE_POST = 'DELETE_POST'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 
 export const SET_POST = 'SET_POST'
+export const GET_POST = 'GET_POST'
